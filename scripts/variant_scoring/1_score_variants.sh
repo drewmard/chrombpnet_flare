@@ -51,7 +51,7 @@ for clust in $model_dir/*; do
     peaksFile=$peaks_dir/${cluster}_peaks.narrowPeak.filter_blacklist.bed
 #     chrombpnetFile=$model_dir/$cluster/$fold/chrombpnet_nobias.h5
     chrombpnetFile=$model_dir/$cluster/$fold/models/chrombpnet_nobias.h5
-    
+
     # skip if it's the SYNAPSE_METADATA_MANIFEST.tsv file
     if [[ "$cluster" == "SYNAPSE_METADATA_MANIFEST.tsv" ]]; then
         continue
