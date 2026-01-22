@@ -12,20 +12,22 @@ variants=/data1/offitk/mardera1/data/neuro_variants_notsynapse/example_scoring_f
 SET=example
 DATASET=trevino_2021
 
-for DATASET in domcke_2020 trevino_2021; do
+# HEADDIR=/data1/offitk/mardera1/data/neuro_variants
+# for DATASET in domcke_2020 trevino_2021; do
+# model_dir=$HEADDIR/chrombpnet_models/$DATASET
+# peaks_dir=$HEADDIR/peaks/$DATASET
+
+HEADDIR=/data1/offitk/mardera1/data/Trisomy/Control
+model_dir=$HEADDIR/chrombpnet_models/K562_bias
+peaks_dir=$HEADDIR/macs_peaks
+for DATASET in Trisomy_Controls; do
+
 echo $DATASET
 
-model_dir=/data1/offitk/mardera1/data/neuro_variants/chrombpnet_models/$DATASET
-peaks_dir=/data1/offitk/mardera1/data/neuro_variants/peaks/$DATASET
 score_dir=/data1/offitk/mardera1/chrombpnet_flare/output/variant_scores/$SET/$DATASET
 log_dir=/data1/offitk/mardera1/chrombpnet_flare/output/logs/$SET/$DATASET
 mkdir -p $score_dir
 mkdir -p $log_dir
-
-# model_dir=/oak/stanford/groups/akundaje/projects/neuro-variants/chrombpnet_models/trevino_2021/K562_bias
-# peaks_dir=/oak/stanford/groups/akundaje/projects/neuro-variants/chrombpnet_inputs/trevino_2021/peaks/filtered
-# score_dir=/oak/stanford/groups/akundaje/projects/neuro-variants/variant_scores/rare/trevino_2021/K562_bias
-# log_dir=/oak/stanford/groups/akundaje/projects/neuro-variants/logs/variant_scores/rare/trevino_2021/K562_bias
 
 hg38_ref_fasta=/data1/offitk/mardera1/data/neuro_variants_notsynapse/GRCh38_no_alt_analysis_set_GCA_000001405.15.fasta
 hg38_chrom_sizes=/data1/offitk/mardera1/data/neuro_variants_notsynapse/GRCh38_EBV.chrom.sizes.tsv
@@ -45,6 +47,8 @@ partitions=gpushort
 
 for clust in $model_dir/*; do
     cluster=$(basename $clust)
+#     peaksFile=$peaks_dir/$cluster.overlap.peaks.bed.gz
+    peaksFile=$peaks_dir/${cluster}_peaks.narrowPeak.filter_blacklist.bed
 
     # skip if it's the SYNAPSE_METADATA_MANIFEST.tsv file
     if [[ "$cluster" == "SYNAPSE_METADATA_MANIFEST.tsv" ]]; then
@@ -57,7 +61,8 @@ for clust in $model_dir/*; do
 
     mkdir -p $log_dir/$cluster
 
-    for fld in {0..4}; do
+    # for fld in {0..4}; do
+    for fld in 0; do
         fold=fold_$fld
         echo
         echo $fold
@@ -85,7 +90,7 @@ for clust in $model_dir/*; do
                 -g $hg38_ref_fasta \
                 -s $hg38_chrom_sizes \
                 -m $model_dir/$cluster/$fold/chrombpnet_nobias.h5 \
-                -p $peaks_dir/$cluster.overlap.peaks.bed.gz \
+                -p $peaksFile \
                 -pg $hg38_ref_fasta \
                 -ps $hg38_chrom_sizes \
                 -o $score_dir/$cluster/$fold/$cluster.$fold.$SET \

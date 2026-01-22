@@ -5,7 +5,7 @@ set -u
 set -o pipefail
 
 processed_dir=/data1/offitk/mardera1/data/Trisomy/Control
-tagalign_dir=$tagalign_dir
+tagalign_dir=$processed_dir
 
 model_input_dir=/data1/offitk/mardera1/data/Trisomy/Control
 filtered_peak_dir=$model_input_dir/macs_peaks
@@ -13,7 +13,7 @@ negatives_dir=$model_input_dir/negative_peaks
 
 bias_name=K562
 bias_model=/data1/offitk/mardera1/data/ENCSR868FGK_bias_fold_0.h5
-model_dir=$model_input_dir/${bias_name}_bias
+model_dir=$model_input_dir/chrombpnet_models/${bias_name}_bias
 log_dir=/data1/offitk/mardera1/chrombpnet_flare/output/logs/model_training/${bias_name}_bias
 
 hg38_ref_fasta=/data1/offitk/mardera1/data/hg38_refs/GRCh38_no_alt_analysis_set_GCA_000001405.15.fasta
@@ -33,7 +33,8 @@ for sample in $negatives_dir/*; do
 
     mkdir -p $log_dir/$sample
 
-    for fld in {0..4}; do
+    for fld in 0; do
+    # for fld in {0..4}; do
         fold=fold_$fld
         echo $fold
 
@@ -50,7 +51,7 @@ for sample in $negatives_dir/*; do
                 $hg38_ref_fasta \
                 $hg38_chrom_sizes \
                 $hg38_splits_dir/$fold.json \
-                $filtered_peak_dir/$sample.filtered.peaks.bed.gz \
+                $filtered_peak_dir/${sample}_peaks.narrowPeak.filter_blacklist.bed \
                 $negatives_dir/$sample/${fold}_negatives.bed \
                 $tagalign_dir/$sample.tagAlign.gz \
                 $bias_model \
