@@ -61,15 +61,16 @@ for clust in $model_dir/*; do
 
     # for fld in {0..4}; do
     for fld in 0; do
-    #     peaksFile=$peaks_dir/$cluster.overlap.peaks.bed.gz
-    peaksFile=$peaks_dir/${cluster}_peaks.narrowPeak.filter_blacklist.bed
-    #     chrombpnetFile=$model_dir/$cluster/$fold/chrombpnet_nobias.h5
-    chrombpnetFile=$model_dir/$cluster/$fold/models/chrombpnet_nobias.h5
 
         fold=fold_$fld
         echo
         echo $fold
         echo
+        #     peaksFile=$peaks_dir/$cluster.overlap.peaks.bed.gz
+        peaksFile=$peaks_dir/${cluster}_peaks.narrowPeak.filter_blacklist.bed
+        #     chrombpnetFile=$model_dir/$cluster/$fold/chrombpnet_nobias.h5
+        chrombpnetFile=$model_dir/$cluster/$fold/models/chrombpnet_nobias.h5
+
 
         mkdir -p $score_dir/$cluster/$fold
 
