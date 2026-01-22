@@ -7,9 +7,11 @@ set -o pipefail
 PRECOMPUTEDSCORES=/data1/offitk/mardera1/chrombpnet_flare/output/variant_scores/msk_example/domcke_2020/domcke_2020.fetal_brain.Astrocytes/fold_0/domcke_2020.fetal_brain.Astrocytes.fold_0.msk_example.variant_scores.shuffled.tsv
 
 variants=/data1/offitk/mardera1/data/neuro_variants_notsynapse/example_scoring_file.tsv
+SET=example
+variants=/data1/offitk/mardera1/chrombpnet_flare/variant_lists/myb_motif_snps.tsv
+SET=myb_motif_snps
 # variants=/data1/offitk/mardera1/chrombpnet_flare/output/snp_lists/msk_example_list.tsv
 # SET=msk_example
-SET=example
 DATASET=trevino_2021
 
 # HEADDIR=/data1/offitk/mardera1/data/neuro_variants
