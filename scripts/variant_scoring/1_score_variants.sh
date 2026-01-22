@@ -49,7 +49,9 @@ for clust in $model_dir/*; do
     cluster=$(basename $clust)
 #     peaksFile=$peaks_dir/$cluster.overlap.peaks.bed.gz
     peaksFile=$peaks_dir/${cluster}_peaks.narrowPeak.filter_blacklist.bed
-
+#     chrombpnetFile=$model_dir/$cluster/$fold/chrombpnet_nobias.h5
+    chrombpnetFile=$model_dir/$cluster/$fold/models/chrombpnet_nobias.h5
+    
     # skip if it's the SYNAPSE_METADATA_MANIFEST.tsv file
     if [[ "$cluster" == "SYNAPSE_METADATA_MANIFEST.tsv" ]]; then
         continue
@@ -89,7 +91,7 @@ for clust in $model_dir/*; do
                 -l $variants \
                 -g $hg38_ref_fasta \
                 -s $hg38_chrom_sizes \
-                -m $model_dir/$cluster/$fold/chrombpnet_nobias.h5 \
+                -m $chrombpnetFile \
                 -p $peaksFile \
                 -pg $hg38_ref_fasta \
                 -ps $hg38_chrom_sizes \
