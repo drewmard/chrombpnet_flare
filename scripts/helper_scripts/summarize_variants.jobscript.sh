@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source ~/.bashrc
+
 micromamba activate chrombpnet2
 
 summary_script=/data1/offitk/mardera1/github/variant-scorer/src/variant_summary_across_folds.py
