@@ -6,7 +6,8 @@
 # Loop over different variant sets:
 variantSet=msk_example
 dataset=trevino_2021
-for variantSet in msk_example; do
+variantSet=ryl1
+# for variantSet in msk_example; do
 
 # Extract chr, pos, and gene columns once and store in a file
 input_file=/data1/offitk/mardera1/chrombpnet_flare/output/variant_annotations/$variantSet/trevino_2021/trevino_2021.c0.annotations.tsv

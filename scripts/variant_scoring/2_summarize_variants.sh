@@ -8,6 +8,9 @@ set -o pipefail
 
 variants=/data1/offitk/mardera1/chrombpnet_flare/output/snp_lists/msk_example_list.tsv
 SET=msk_example
+variants=/data1/offitk/mardera1/data/genetics/3333177.AGCTAAGCGG-ATTAATACGC.hard-filtered.gnomad-filtered.andrew_filter1.scoring_file2_chrfilter.txt
+SET=ryl1
+
 DATASET=trevino_2021
 
 for DATASET in domcke_2020 trevino_2021; do
@@ -25,7 +28,8 @@ partitions=cpu #gpushort
 time=60
 cpus=1
 mem=30G
-num_folds=5
+# num_folds=5
+num_folds=2
 latest_fold=fold_$((num_folds - 1))
 
 for clust in $score_dir/*; do
@@ -55,8 +59,8 @@ for clust in $score_dir/*; do
         [[ -f $summary_file ]] || \
         sbatch -J $cluster.$SET -t $time -c $cpus --mem=$mem \
             -p $partitions --requeue \
-            -o $log_dir/$cluster.log \
-            -e $log_dir/$cluster.err \
+            -o $log_dir/$cluster/$fold.summ.log.txt \
+            -e $log_dir/$cluster/$fold.summ.err.txt \
             $jobscript \
                 $score_dir \
                 $merged_dir \

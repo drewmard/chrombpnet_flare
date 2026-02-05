@@ -6,6 +6,8 @@ set -o pipefail
 
 variants=/data1/offitk/mardera1/chrombpnet_flare/output/snp_lists/msk_example_list.tsv
 SET=msk_example
+variants=/data1/offitk/mardera1/data/genetics/3333177.AGCTAAGCGG-ATTAATACGC.hard-filtered.gnomad-filtered.andrew_filter1.scoring_file2_chrfilter.txt
+SET=ryl1
 DATASET=trevino_2021
 
 for DATASET in domcke_2020 trevino_2021; do

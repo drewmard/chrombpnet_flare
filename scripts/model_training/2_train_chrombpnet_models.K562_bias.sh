@@ -33,8 +33,8 @@ for sample in $negatives_dir/*; do
 
     mkdir -p $log_dir/$sample
 
-    for fld in 0; do
-    # for fld in {0..4}; do
+    # for fld in 0; do
+    for fld in {1..2}; do
         fold=fold_$fld
         echo $fold
 
