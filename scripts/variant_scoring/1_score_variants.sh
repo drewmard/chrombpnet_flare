@@ -22,20 +22,23 @@ variants=/data1/offitk/mardera1/data/genetics/3333177.AGCTAAGCGG-ATTAATACGC.hard
 SET=ryl1
 DATASET=trevino_2021
 
-HEADDIR=/data1/offitk/mardera1/data/neuro_variants
-for DATASET in domcke_2020 trevino_2021; do
-model_dir=$HEADDIR/chrombpnet_models/$DATASET
-peaks_dir=$HEADDIR/peaks/$DATASET
+variants=/data1/offitk/mardera1/chrombpnet_flare/variant_lists/padhi_predict.tsv
+SET=padhi_predict
 
-# HEADDIR=/data1/offitk/mardera1/data/Trisomy/Control
-# model_dir=$HEADDIR/chrombpnet_models/K562_bias
-# peaks_dir=$HEADDIR/macs_peaks
-# for DATASET in Trisomy_Controls; do
+# HEADDIR=/data1/offitk/mardera1/data/neuro_variants
+# for DATASET in domcke_2020 trevino_2021; do
+# model_dir=$HEADDIR/chrombpnet_models/$DATASET
+# peaks_dir=$HEADDIR/peaks/$DATASET
+
+HEADDIR=/data1/offitk/mardera1/data/Trisomy/Control
+model_dir=$HEADDIR/chrombpnet_models/K562_bias
+peaks_dir=$HEADDIR/macs_peaks
+for DATASET in Trisomy_Controls; do
 
 echo $DATASET
 
 score_dir=/data1/offitk/mardera1/chrombpnet_flare/output/variant_scores/$SET/$DATASET
-log_dir=/data1/offitk/mardera1/chrombpnet_flare/output/logs/$SET/$DATASET
+log_dir=/data1/offitk/mardera1/chrombpnet_flare/output/logs/variant_scores/$SET/$DATASET
 mkdir -p $score_dir
 mkdir -p $log_dir
 
@@ -70,7 +73,7 @@ for clust in $model_dir/*; do
     mkdir -p $log_dir/$cluster
 
     # for fld in {0..4}; do
-    for fld in 1; do
+    for fld in {0..1}; do
 
         fold=fold_$fld
         echo
@@ -81,9 +84,9 @@ for clust in $model_dir/*; do
         peaksFile=$peaks_dir/${cluster}_peaks.narrowPeak.filter_blacklist.bed
         chrombpnetFile=$model_dir/$cluster/$fold/models/chrombpnet_nobias.h5
         
-        # for Marderstein Kundu et al
-        peaksFile=$peaks_dir/$cluster.overlap.peaks.bed.gz
-        chrombpnetFile=$model_dir/$cluster/$fold/chrombpnet_nobias.h5
+        # # for Marderstein Kundu et al
+        # peaksFile=$peaks_dir/$cluster.overlap.peaks.bed.gz
+        # chrombpnetFile=$model_dir/$cluster/$fold/chrombpnet_nobias.h5
         
         mkdir -p $score_dir/$cluster/$fold
         

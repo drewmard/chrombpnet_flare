@@ -10,7 +10,15 @@ variants=/data1/offitk/mardera1/data/genetics/3333177.AGCTAAGCGG-ATTAATACGC.hard
 SET=ryl1
 DATASET=trevino_2021
 
-for DATASET in domcke_2020 trevino_2021; do
+variants=/data1/offitk/mardera1/chrombpnet_flare/variant_lists/padhi_predict.tsv
+SET=padhi_predict
+DATASET=Trisomy_Controls
+HEADDIR=/data1/offitk/mardera1/data/Trisomy/Control
+peaks_dir=$HEADDIR/macs_peaks
+
+# for DATASET in domcke_2020 trevino_2021; do
+# HEADDIR=/data1/offitk/mardera1/data/neuro_variants
+# peaks_dir=$HEADDIR/peaks/$DATASET
 echo $DATASET
 
 score_dir=/data1/offitk/mardera1/chrombpnet_flare/output/variant_scores/$SET/$DATASET
@@ -18,9 +26,6 @@ log_dir=/data1/offitk/mardera1/chrombpnet_flare/output/logs/$SET/$DATASET
 
 merged_dir=/data1/offitk/mardera1/chrombpnet_flare/output/merged_variant_scores/$SET/$DATASET
 summary_dir=/data1/offitk/mardera1/chrombpnet_flare/output/variant_summary/$SET/$DATASET
-
-processed_dir=/data1/offitk/mardera1/data/neuro_variants/peaks/$DATASET
-overlap_peak_dir=$processed_dir
 
 annotated_dir=/data1/offitk/mardera1/chrombpnet_flare/output/variant_annotations/$SET/$DATASET
 log_dir=/data1/offitk/mardera1/chrombpnet_flare/output/logs/variant_annotations/$SET/$DATASET
@@ -55,6 +60,15 @@ for clust in $score_dir/*; do
 
     annotated_file=$annotated_dir/$cluster.annotations.tsv
 
+
+
+    # For new datasets:
+    peaksFile=$peaks_dir/${cluster}_peaks.narrowPeak.filter_blacklist.bed
+    
+    # # for Marderstein Kundu et al
+    # peaksFile=$peaks_dir/$cluster.overlap.peaks.bed.gz
+
+
     if [[ $expected_lines -eq $observed_lines ]]; then
         [[ -f $annotated_file ]] || \
         sbatch -J $cluster.$DATASET.$SET -t $time -c $cpus --mem=$mem \
@@ -64,7 +78,7 @@ for clust in $score_dir/*; do
             $jobscript \
                 $summary_dir \
                 $annotated_dir \
-                $overlap_peak_dir/$cluster.overlap.peaks.bed.gz \
+                $peaksFile \
                 $cluster
     fi
 done

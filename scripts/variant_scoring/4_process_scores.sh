@@ -7,6 +7,9 @@
 variantSet=msk_example
 dataset=trevino_2021
 variantSet=ryl1
+variantSet=padhi_predict
+dataset=Trisomy_Controls
+
 # for variantSet in msk_example; do
 
 # Extract chr, pos, and gene columns once and store in a file
@@ -17,8 +20,8 @@ cut -f1-5,32-37 "$input_file" > "$metainfofile"
 
 # Loop over each dataset
 # for dataset in ameen_2022 domcke_2020 encode_2024 trevino_2021 corces_2020; do
-dataset=domcke_2020
-for dataset in trevino_2021 domcke_2020; do
+# dataset=domcke_2020
+# for dataset in trevino_2021 domcke_2020; do
 echo $dataset
 
 # Set the 'bias' directory
@@ -46,7 +49,7 @@ filename=$(basename $file)
 out=$outdir/${filename}.sub
 
 # Extract cell type identifier
-prefix="${dataset}."
+prefix="" # "${dataset}."
 suffix=".annotations.tsv"
 cell=$(basename "$file" | sed -n "s/${prefix}\(.*\)${suffix}/\1/p")
 

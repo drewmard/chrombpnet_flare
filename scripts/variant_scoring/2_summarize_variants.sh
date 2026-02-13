@@ -13,7 +13,11 @@ SET=ryl1
 
 DATASET=trevino_2021
 
-for DATASET in domcke_2020 trevino_2021; do
+variants=/data1/offitk/mardera1/chrombpnet_flare/variant_lists/padhi_predict.tsv
+SET=padhi_predict
+DATASET=Trisomy_Controls
+
+# for DATASET in domcke_2020 trevino_2021; do
 echo $DATASET
 
 score_dir=/data1/offitk/mardera1/chrombpnet_flare/output/variant_scores/$SET/$DATASET
@@ -29,7 +33,7 @@ time=60
 cpus=1
 mem=30G
 # num_folds=5
-num_folds=2
+num_folds=1
 latest_fold=fold_$((num_folds - 1))
 
 for clust in $score_dir/*; do

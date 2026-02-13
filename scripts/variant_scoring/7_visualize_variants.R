@@ -11,6 +11,7 @@ library(tidyr)
 
 # Output:
 outdir = "/Users/amarderstein/Library/Mobile Documents/com~apple~CloudDocs/Documents/Research/chrombpnet_flare/output/visualize_variants"
+outdir = "/Users/amarderstein/Library/Mobile Documents/com~apple~CloudDocs/Documents/Research/chrombpnet_flare/output/padhi_predict"
 
 # SHAP:
 # f = "/data1/offitk/mardera1/chrombpnet_flare/output/variant_shap/HSCs/myb_motif_snps/Trisomy_Controls/fold_0/HSCs.fold_0.variant_shap.counts.h5"
@@ -18,13 +19,16 @@ outdir = "/Users/amarderstein/Library/Mobile Documents/com~apple~CloudDocs/Docum
 # f = "/Users/amarderstein/Downloads/genetics/trevino_2021.c7.fold_0.variant_shap.counts.h5"
 # f = "/Users/amarderstein/Downloads/ahi1_test/HSCs.fold_0.variant_shap.counts.h5"
 f_shap = "/Users/amarderstein/Downloads/ahi1_mhe/HSCs.fold_0.variant_shap.counts.h5"
+f_shap = "/Users/amarderstein/Downloads/padhi_predict/NK_cells.fold_0.variant_shap.counts.h5"
 
 # PRED:
 # f_pred = "/Users/amarderstein/Downloads/ahi1_test/HSCs.fold_0.scores.variant_predictions.h5"
 f_pred = "/Users/amarderstein/Downloads/ahi1_mhe/HSCs.fold_0.scores.variant_predictions.h5"
+f_pred = "/Users/amarderstein/Downloads/padhi_predict/NK_cells.fold_0.scores.variant_predictions.h5"
 
 # ISM:
 f_scores = "~/Downloads/ahi1_mhe/HSCs.fold_0.scores.variant_scores.tsv"
+f_scores = "~/Downloads/padhi_predict/NK_cells.fold_0.scores.variant_scores.tsv"
 
 # PHYLOP:
 f_phylop = "/Users/amarderstein/Downloads/ahi1_test/phylop_region.bedGraph"
@@ -37,7 +41,7 @@ pos_of_interest = 135323396; idx = 208
 plot_title = "H-Me"
 ###################################################
 
-# predictions = fread(f_scores,data.table = F,stringsAsFactors = F)
+predictions = fread(f_scores,data.table = F,stringsAsFactors = F)
 # subset(predictions,pos==135323396-16)
 # as.data.frame(predictions)[idx <- which.max(predictions$abs_logfc),];idx
 # pos_of_interest
@@ -45,23 +49,24 @@ plot_title = "H-Me"
 
 ##############################
 # f = "~/Downloads/HSCs.fold_0.scores.variant_scores.tsv"
-# df=fread(f,data.table = F,stringsAsFactors = F);df
+df=fread(f_scores,data.table = F,stringsAsFactors = F);df[1,]
 width_to_use=20
 # dir.create("~/Downloads/myb_childhood_leukemia")
 dir.create(outdir)
 
-visualize_ism_heatmap=TRUE; ism_heatmap_prefix = "h_me"
+visualize_ism_heatmap=FALSE; ism_heatmap_prefix = "h_me"
 visualize_pred=TRUE
-visualize_phylop=TRUE
-visualize_ism=TRUE
+visualize_phylop=FALSE
+visualize_ism=FALSE
 save_plot=TRUE
 print_plot=TRUE
 variant_line = TRUE
-for (index in idx:idx) {
+for (index in 1:3) {
+# for (index in idx:idx) {
   # for (index in 1:1) {
   # for (index in 1:5) {
-  flank      <- 75 # 50
-  flank2      <- 200
+  flank      <- 150 # for shap
+  flank2      <- 300
   center_shift = 0
   
   alleles <- h5read(f_shap, "/alleles")

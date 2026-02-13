@@ -4,22 +4,25 @@ set -e
 set -u
 set -o pipefail
 
-# variants=/data1/offitk/mardera1/chrombpnet_flare/variant_lists/myb_motif_snps.tsv
-# SET=myb_motif_snps
-# DATASET=Trisomy_Controls
-# for DATASET in Trisomy_Controls; do
-# HEADDIR=/data1/offitk/mardera1/data/Trisomy/Control
-# model_dir=$HEADDIR/chrombpnet_models/K562_bias
-# peaks_dir=$HEADDIR/macs_peaks
+fld=0
+variants=/data1/offitk/mardera1/chrombpnet_flare/variant_lists/myb_motif_snps.tsv
+SET=myb_motif_snps
+variants=/data1/offitk/mardera1/chrombpnet_flare/variant_lists/padhi_predict.tsv
+SET=padhi_predict
+DATASET=Trisomy_Controls
+for DATASET in Trisomy_Controls; do
+HEADDIR=/data1/offitk/mardera1/data/Trisomy/Control
+model_dir=$HEADDIR/chrombpnet_models/K562_bias
+peaks_dir=$HEADDIR/macs_peaks
 
-variants=/data1/offitk/mardera1/data/genetics/snp_of_interest.txt
-SET=ryl1
-DATASET=trevino_2021
-HEADDIR=/data1/offitk/mardera1/data/neuro_variants
-clust=trevino_2021.c7
-for DATASET in domcke_2020 trevino_2021; do
-model_dir=$HEADDIR/chrombpnet_models/$DATASET
-peaks_dir=$HEADDIR/peaks/$DATASET
+# variants=/data1/offitk/mardera1/data/genetics/snp_of_interest.txt
+# SET=ryl1
+# DATASET=trevino_2021
+# HEADDIR=/data1/offitk/mardera1/data/neuro_variants
+# clust=trevino_2021.c7
+# for DATASET in domcke_2020 trevino_2021; do
+# model_dir=$HEADDIR/chrombpnet_models/$DATASET
+# peaks_dir=$HEADDIR/peaks/$DATASET
 
 score_dir=/data1/offitk/mardera1/chrombpnet_flare/output/variant_scores/$SET/$DATASET
 log_dir=/data1/offitk/mardera1/chrombpnet_flare/output/logs/variant_shap/$SET/$DATASET
@@ -54,6 +57,11 @@ for clust in $model_dir/*; do
         
         mkdir -p $shap_dir/$cluster/$SET/$DATASET/$fold
         
+        # for new:
+        chrombpnetFile=$model_dir/$cluster/$fold/models/chrombpnet_nobias.h5
+        # # for Marderstein Kundu et al
+        # chrombpnetFile=$model_dir/$cluster/$fold/chrombpnet_nobias.h5
+        
 		#         score_output_file=$shap_dir/$cluster/$fold/$cluster.$fold.common.shap.variant_scores.tsv
         shap_output_file=$shap_dir/$cluster/$fold/$cluster.$fold.shap.variant_shap.counts.h5
 		# 
@@ -76,12 +84,11 @@ for clust in $model_dir/*; do
                 -l $variants \
                 -g $hg38_ref_fasta \
                 -s $hg38_chrom_sizes \
-                -m $model_dir/$cluster/$fold/models/chrombpnet_nobias.h5 \
+                -m $chrombpnetFile \
                 -o $shap_dir/$cluster/$SET/$DATASET/$fold/$cluster.$fold.scores \
                 -t 0 \
                 -sc chrombpnet
                 
-
         [[ -f $shap_output_file ]] || \
         sbatch -J $cluster.$fold.shap -t $time -c $cpus --mem=$mem \
             -p $partitions --gpus 1 --requeue \
@@ -91,7 +98,7 @@ for clust in $model_dir/*; do
                 -l $variants \
                 -g $hg38_ref_fasta \
                 -s $hg38_chrom_sizes \
-                -m $model_dir/$cluster/$fold/chrombpnet_nobias.h5 \
+                -m $chrombpnetFile \
                 -o $shap_dir/$cluster/$SET/$DATASET/$fold/$cluster.$fold \
                 -sc chrombpnet
                 # -m $model_dir/$cluster/$fold/models/chrombpnet_nobias.h5 \
