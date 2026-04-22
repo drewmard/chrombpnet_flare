@@ -12,23 +12,25 @@ library(tidyr)
 # Output:
 outdir = "/Users/amarderstein/Library/Mobile Documents/com~apple~CloudDocs/Documents/Research/chrombpnet_flare/output/visualize_variants"
 outdir = "/Users/amarderstein/Library/Mobile Documents/com~apple~CloudDocs/Documents/Research/chrombpnet_flare/output/padhi_predict"
+outdir = "/Users/amarderstein/Library/Mobile Documents/com~apple~CloudDocs/Documents/Research/chrombpnet_flare/output/RBC_Trans_Credible_Sets_v2"
 
 # SHAP:
 # f = "/data1/offitk/mardera1/chrombpnet_flare/output/variant_shap/HSCs/myb_motif_snps/Trisomy_Controls/fold_0/HSCs.fold_0.variant_shap.counts.h5"
 # f = "/Users/amarderstein/Downloads/HSCs.fold_0.variant_shap.counts.h5"
 # f = "/Users/amarderstein/Downloads/genetics/trevino_2021.c7.fold_0.variant_shap.counts.h5"
 # f = "/Users/amarderstein/Downloads/ahi1_test/HSCs.fold_0.variant_shap.counts.h5"
-f_shap = "/Users/amarderstein/Downloads/ahi1_mhe/HSCs.fold_0.variant_shap.counts.h5"
-f_shap = "/Users/amarderstein/Downloads/padhi_predict/NK_cells.fold_0.variant_shap.counts.h5"
+f_shap = "/Users/amarderstein/Downloads/MEMPs.fold_0.variant_shap.counts.h5"
 
 # PRED:
 # f_pred = "/Users/amarderstein/Downloads/ahi1_test/HSCs.fold_0.scores.variant_predictions.h5"
 f_pred = "/Users/amarderstein/Downloads/ahi1_mhe/HSCs.fold_0.scores.variant_predictions.h5"
 f_pred = "/Users/amarderstein/Downloads/padhi_predict/NK_cells.fold_0.scores.variant_predictions.h5"
+f_pred = "/Users/amarderstein/Downloads/fold_0/MEMPs.fold_0.scores.variant_predictions.h5"
 
 # ISM:
 f_scores = "~/Downloads/ahi1_mhe/HSCs.fold_0.scores.variant_scores.tsv"
 f_scores = "~/Downloads/padhi_predict/NK_cells.fold_0.scores.variant_scores.tsv"
+f_scores = "/Users/amarderstein/Downloads/fold_0/MEMPs.fold_0.scores.variant_scores.tsv"
 
 # PHYLOP:
 f_phylop = "/Users/amarderstein/Downloads/ahi1_test/phylop_region.bedGraph"
@@ -65,7 +67,7 @@ for (index in 1:3) {
 # for (index in idx:idx) {
   # for (index in 1:1) {
   # for (index in 1:5) {
-  flank      <- 150 # for shap
+  flank      <- 100 # for shap
   flank2      <- 300
   center_shift = 0
   

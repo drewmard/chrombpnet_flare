@@ -17,6 +17,16 @@ variants=/data1/offitk/mardera1/chrombpnet_flare/variant_lists/padhi_predict.tsv
 SET=padhi_predict
 DATASET=Trisomy_Controls
 
+variants=/data1/offitk/mardera1/chrombpnet_flare/variant_lists/AoU_eQTL_variants_pip_0.9_pip_0.01.sites.tsv
+SET=AoU_eQTL_variants_pip_0.9_pip_0.01
+
+variants=/data1/offitk/mardera1/chrombpnet_flare/variant_lists/RBC_Trans_Credible_Sets.tsv
+SET=RBC_Trans_Credible_Sets
+
+variants=/data1/offitk/mardera1/chrombpnet_flare/variant_lists/tp53_driver_gwas_list.tsv
+SET=tp53_driver_gwas_list
+DATASET=Trisomy_Controls
+
 # for DATASET in domcke_2020 trevino_2021; do
 echo $DATASET
 
@@ -33,7 +43,7 @@ time=60
 cpus=1
 mem=30G
 # num_folds=5
-num_folds=1
+num_folds=2
 latest_fold=fold_$((num_folds - 1))
 
 for clust in $score_dir/*; do

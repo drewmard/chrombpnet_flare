@@ -25,6 +25,16 @@ DATASET=trevino_2021
 variants=/data1/offitk/mardera1/chrombpnet_flare/variant_lists/padhi_predict.tsv
 SET=padhi_predict
 
+variants=/data1/offitk/mardera1/chrombpnet_flare/variant_lists/AoU_eQTL_variants_pip_0.9_pip_0.01.sites.tsv
+SET=AoU_eQTL_variants_pip_0.9_pip_0.01
+
+variants=/data1/offitk/mardera1/chrombpnet_flare/variant_lists/RBC_Trans_Credible_Sets.tsv
+SET=RBC_Trans_Credible_Sets
+
+variants=/data1/offitk/mardera1/chrombpnet_flare/variant_lists/tp53_driver_gwas_list.tsv
+SET=tp53_driver_gwas_list
+DATASET=Trisomy_Controls
+
 # HEADDIR=/data1/offitk/mardera1/data/neuro_variants
 # for DATASET in domcke_2020 trevino_2021; do
 # model_dir=$HEADDIR/chrombpnet_models/$DATASET
@@ -53,10 +63,10 @@ cpus=2
 mem=60G
 partitions=gpushort
 
-# time=24:00:00
+# time=48:00:00
 # cpus=2
-# mem=60G
-# partitions=akundaje,owners
+# mem=128G
+# partitions=gpu
 
 for clust in $model_dir/*; do
     cluster=$(basename $clust)

@@ -12,6 +12,16 @@ DATASET=trevino_2021
 
 variants=/data1/offitk/mardera1/chrombpnet_flare/variant_lists/padhi_predict.tsv
 SET=padhi_predict
+variants=/data1/offitk/mardera1/chrombpnet_flare/variant_lists/AoU_eQTL_variants_pip_0.9_pip_0.01.sites.tsv
+SET=AoU_eQTL_variants_pip_0.9_pip_0.01
+
+variants=/data1/offitk/mardera1/chrombpnet_flare/variant_lists/RBC_Trans_Credible_Sets.tsv
+SET=RBC_Trans_Credible_Sets
+
+variants=/data1/offitk/mardera1/chrombpnet_flare/variant_lists/tp53_driver_gwas_list.tsv
+SET=tp53_driver_gwas_list
+DATASET=Trisomy_Controls
+
 DATASET=Trisomy_Controls
 HEADDIR=/data1/offitk/mardera1/data/Trisomy/Control
 peaks_dir=$HEADDIR/macs_peaks

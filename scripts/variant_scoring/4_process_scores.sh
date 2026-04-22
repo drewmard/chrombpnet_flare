@@ -8,12 +8,16 @@ variantSet=msk_example
 dataset=trevino_2021
 variantSet=ryl1
 variantSet=padhi_predict
+variantSet=AoU_eQTL_variants_pip_0.9_pip_0.01
+variantSet=RBC_Trans_Credible_Sets
 dataset=Trisomy_Controls
+variantSet=tp53_driver_gwas_list
 
 # for variantSet in msk_example; do
 
 # Extract chr, pos, and gene columns once and store in a file
 input_file=/data1/offitk/mardera1/chrombpnet_flare/output/variant_annotations/$variantSet/trevino_2021/trevino_2021.c0.annotations.tsv
+input_file=/data1/offitk/mardera1/chrombpnet_flare/output/variant_annotations/$variantSet/Trisomy_Controls/HSCs.annotations.tsv
 metainfofile=/data1/offitk/mardera1/chrombpnet_flare/output/summarize/$variantSet.metainfo.tsv
 mkdir -p /data1/offitk/mardera1/chrombpnet_flare/output/summarize
 cut -f1-5,32-37 "$input_file" > "$metainfofile"
@@ -59,7 +63,8 @@ cell=$(basename "$file" | sed -n "s/${prefix}\(.*\)${suffix}/\1/p")
 # Then write to the output file:
 # BEGIN {OFS="\t"} sets the output field separator to a tab character
 # {print $8, $9, $34} extracts columns 8, 9, and 34 from each line of the input file
-awk 'BEGIN {OFS="\t"} {print $8, $9, $38}' $file | awk -v cell="$cell" -v dataset="$dataset" 'BEGIN{FS=OFS="\t"} NR==1{for(i=1;i<=3;i++)$i=$i"."cell"."dataset} NR>1{for(i=1;i<=3;i++)$i=$i} {print $1, $2, $3}' > $out
+# awk 'BEGIN {OFS="\t"} {print $8, $9, $38}' $file | awk -v cell="$cell" -v dataset="$dataset" 'BEGIN{FS=OFS="\t"} NR==1{for(i=1;i<=3;i++)$i=$i"."cell"."dataset} NR>1{for(i=1;i<=3;i++)$i=$i} {print $1, $2, $3}' > $out
+awk 'BEGIN {OFS="\t"} {print $6, $38}' $file | awk -v cell="$cell" -v dataset="$dataset" 'BEGIN{FS=OFS="\t"} NR==1{for(i=1;i<=3;i++)$i=$i"."cell"."dataset} NR>1{for(i=1;i<=2;i++)$i=$i} {print $1, $2}' > $out
 
 # Print the full path of the output file that is now saved
 echo $out
