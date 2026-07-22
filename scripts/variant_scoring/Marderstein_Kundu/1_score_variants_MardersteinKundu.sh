@@ -35,19 +35,19 @@ variants=/data1/offitk/mardera1/chrombpnet_flare/variant_lists/tp53_driver_gwas_
 SET=tp53_driver_gwas_list
 DATASET=Trisomy_Controls
 
-variants=/data1/offitk/mardera1/chrombpnet_flare/variant_lists/neuro.rare.variants.1kg.lt_0.001.tsv
-SET=1kg_rare
-DATASET=Trisomy_Controls
+variants=/data1/offitk/mardera1/chrombpnet_flare/variant_lists/hg38_neanderthal_SNPs.tsv
+SET=neanderthal_SNPs
+DATASET=trevino_2021
 
-# HEADDIR=/data1/offitk/mardera1/data/neuro_variants
-# for DATASET in domcke_2020 trevino_2021; do
-# model_dir=$HEADDIR/chrombpnet_models/$DATASET
-# peaks_dir=$HEADDIR/peaks/$DATASET
+HEADDIR=/data1/offitk/mardera1/data/neuro_variants
+for DATASET in domcke_2020 trevino_2021 ameen_2022 corces_2020 encode_2024; do
+model_dir=$HEADDIR/chrombpnet_models/$DATASET
+peaks_dir=$HEADDIR/peaks/$DATASET
 
-HEADDIR=/data1/offitk/mardera1/data/Trisomy/Control
-model_dir=$HEADDIR/chrombpnet_models/K562_bias
-peaks_dir=$HEADDIR/macs_peaks
-for DATASET in Trisomy_Controls; do
+# HEADDIR=/data1/offitk/mardera1/data/Trisomy/Control
+# model_dir=$HEADDIR/chrombpnet_models/K562_bias
+# peaks_dir=$HEADDIR/macs_peaks
+# for DATASET in Trisomy_Controls; do
 
 echo $DATASET
 
@@ -67,7 +67,7 @@ scoring_script=/data1/offitk/mardera1/github/variant-scorer/src/variant_scoring.
 # mem=60G
 # partitions=gpushort
 
-time=48:00:00
+time=24:00:00
 cpus=2
 mem=128G
 partitions=gpu
@@ -86,8 +86,8 @@ for clust in $model_dir/*; do
 
     mkdir -p $log_dir/$cluster
 
-    # for fld in {0..4}; do
-    for fld in {0..1}; do
+    for fld in {0..4}; do
+    # for fld in {0..1}; do
 
         fold=fold_$fld
         echo
@@ -95,12 +95,12 @@ for clust in $model_dir/*; do
         echo
         
         # For new datasets:
-        peaksFile=$peaks_dir/${cluster}_peaks.narrowPeak.filter_blacklist.bed
-        chrombpnetFile=$model_dir/$cluster/$fold/models/chrombpnet_nobias.h5
+        # peaksFile=$peaks_dir/${cluster}_peaks.narrowPeak.filter_blacklist.bed
+        # chrombpnetFile=$model_dir/$cluster/$fold/models/chrombpnet_nobias.h5
         
         # # for Marderstein Kundu et al
-        # peaksFile=$peaks_dir/$cluster.overlap.peaks.bed.gz
-        # chrombpnetFile=$model_dir/$cluster/$fold/chrombpnet_nobias.h5
+        peaksFile=$peaks_dir/$cluster.overlap.peaks.bed.gz
+        chrombpnetFile=$model_dir/$cluster/$fold/chrombpnet_nobias.h5
         
         mkdir -p $score_dir/$cluster/$fold
         

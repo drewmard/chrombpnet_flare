@@ -4,19 +4,14 @@ set -e
 set -u
 set -o pipefail
 
-# micromamba activate chrombpnet2
-
 variants=/data1/offitk/mardera1/chrombpnet_flare/output/snp_lists/msk_example_list.tsv
 SET=msk_example
 variants=/data1/offitk/mardera1/data/genetics/3333177.AGCTAAGCGG-ATTAATACGC.hard-filtered.gnomad-filtered.andrew_filter1.scoring_file2_chrfilter.txt
 SET=ryl1
-
 DATASET=trevino_2021
 
 variants=/data1/offitk/mardera1/chrombpnet_flare/variant_lists/padhi_predict.tsv
 SET=padhi_predict
-DATASET=Trisomy_Controls
-
 variants=/data1/offitk/mardera1/chrombpnet_flare/variant_lists/AoU_eQTL_variants_pip_0.9_pip_0.01.sites.tsv
 SET=AoU_eQTL_variants_pip_0.9_pip_0.01
 
@@ -25,7 +20,6 @@ SET=RBC_Trans_Credible_Sets
 
 variants=/data1/offitk/mardera1/chrombpnet_flare/variant_lists/tp53_driver_gwas_list.tsv
 SET=tp53_driver_gwas_list
-DATASET=Trisomy_Controls
 
 variants=/data1/offitk/mardera1/chrombpnet_flare/variant_lists/hg38_neanderthal_SNPs.tsv
 SET=neanderthal_SNPs
@@ -34,8 +28,14 @@ variants=/data1/offitk/mardera1/chrombpnet_flare/variant_lists/neuro.rare.varian
 SET=1kg_rare
 DATASET=Trisomy_Controls
 
+DATASET=Trisomy_Controls
+HEADDIR=/data1/offitk/mardera1/data/Trisomy/Control
+peaks_dir=$HEADDIR/macs_peaks
+
 # for DATASET in domcke_2020 trevino_2021; do
-echo $DATASET
+# HEADDIR=/data1/offitk/mardera1/data/neuro_variants
+# peaks_dir=$HEADDIR/peaks/$DATASET
+# echo $DATASET
 
 score_dir=/data1/offitk/mardera1/chrombpnet_flare/output/variant_scores/$SET/$DATASET
 log_dir=/data1/offitk/mardera1/chrombpnet_flare/output/logs/$SET/$DATASET
@@ -43,15 +43,15 @@ log_dir=/data1/offitk/mardera1/chrombpnet_flare/output/logs/$SET/$DATASET
 merged_dir=/data1/offitk/mardera1/chrombpnet_flare/output/merged_variant_scores/$SET/$DATASET
 summary_dir=/data1/offitk/mardera1/chrombpnet_flare/output/variant_summary/$SET/$DATASET
 
-jobscript=/data1/offitk/mardera1/chrombpnet_flare/scripts/helper_scripts/summarize_variants.jobscript.sh
+annotated_dir=/data1/offitk/mardera1/chrombpnet_flare/output/variant_annotations/$SET/$DATASET
+log_dir=/data1/offitk/mardera1/chrombpnet_flare/output/logs/variant_annotations/$SET/$DATASET
 
-partitions=cpu #gpushort
-time=60
+jobscript=/data1/offitk/mardera1/chrombpnet_flare/scripts/helper_scripts/annotate_variants.jobscript.sh
+
+time=120
 cpus=1
 mem=30G
-# num_folds=5
-num_folds=2
-latest_fold=fold_$((num_folds - 1))
+partitions=cpu # gpushort
 
 for clust in $score_dir/*; do
     cluster=$(basename $clust)
@@ -59,9 +59,14 @@ for clust in $score_dir/*; do
     echo $cluster
     echo
 
+    mkdir -p $annotated_dir
+    mkdir -p $log_dir
+
+    summary_file=$summary_dir/$cluster.mean.variant_scores.tsv
+
     expected_lines=$(wc -l < $variants)
-    if [[ -n $(ls -A $score_dir/$cluster/$latest_fold) ]]; then
-        observed_lines=$(cat $score_dir/$cluster/$latest_fold/*.variant_scores.tsv | grep -v variant_id | wc -l)
+    if [[ -f $summary_file ]]; then
+        observed_lines=$(cat $summary_file | grep -v variant_id | wc -l)
     else
         observed_lines=0
     fi
@@ -69,25 +74,28 @@ for clust in $score_dir/*; do
     echo Expected Lines: $expected_lines
     echo Observed Lines: $observed_lines
 
-    summary_file=$summary_dir/$cluster.mean.variant_scores.tsv
+    annotated_file=$annotated_dir/$cluster.annotations.tsv
+
+
+
+    # For new datasets:
+    peaksFile=$peaks_dir/${cluster}_peaks.narrowPeak.filter_blacklist.bed
+    
+    # # for Marderstein Kundu et al
+    # peaksFile=$peaks_dir/$cluster.overlap.peaks.bed.gz
+
 
     if [[ $expected_lines -eq $observed_lines ]]; then
-
-        mkdir -p $merged_dir/$cluster
-        mkdir -p $summary_dir
-        mkdir -p $log_dir
-
-        [[ -f $summary_file ]] || \
-        sbatch -J $cluster.$SET -t $time -c $cpus --mem=$mem \
+        [[ -f $annotated_file ]] || \
+        sbatch -J $cluster.$DATASET.$SET -t $time -c $cpus --mem=$mem \
             -p $partitions --requeue \
-            -o $log_dir/$cluster/$fold.summ.log.txt \
-            -e $log_dir/$cluster/$fold.summ.err.txt \
+            -o $log_dir/$cluster.log \
+            -e $log_dir/$cluster.err \
             $jobscript \
-                $score_dir \
-                $merged_dir \
                 $summary_dir \
-                $cluster \
-                $num_folds
+                $annotated_dir \
+                $peaksFile \
+                $cluster
     fi
 done
 

@@ -23,8 +23,8 @@ dataset=Trisomy_Controls
 # for variantSet in msk_example; do
 
 # Extract chr, pos, and gene columns once and store in a file
-input_file=/data1/offitk/mardera1/chrombpnet_flare/output/variant_annotations/$variantSet/trevino_2021/trevino_2021.c0.annotations.tsv
-# input_file=/data1/offitk/mardera1/chrombpnet_flare/output/variant_annotations/$variantSet/Trisomy_Controls/HSCs.annotations.tsv
+# input_file=/data1/offitk/mardera1/chrombpnet_flare/output/variant_annotations/$variantSet/trevino_2021/trevino_2021.c0.annotations.tsv
+input_file=/data1/offitk/mardera1/chrombpnet_flare/output/variant_annotations/$variantSet/Trisomy_Controls/HSCs.annotations.tsv
 metainfofile=/data1/offitk/mardera1/chrombpnet_flare/output/summarize/$variantSet.metainfo.tsv
 mkdir -p /data1/offitk/mardera1/chrombpnet_flare/output/summarize
 cut -f1-5,32-37 "$input_file" > "$metainfofile"
@@ -32,7 +32,7 @@ cut -f1-5,32-37 "$input_file" > "$metainfofile"
 # Loop over each dataset
 # for dataset in ameen_2022 domcke_2020 encode_2024 trevino_2021 corces_2020; do
 # dataset=domcke_2020
-for dataset in trevino_2021 domcke_2020; do
+# for dataset in trevino_2021 domcke_2020; do
 echo $dataset
 
 # Set the 'bias' directory
