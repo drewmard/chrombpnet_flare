@@ -6,7 +6,7 @@ shopt -s nullglob
 # Keep these values synchronized with 1_score_variants_ABM_Blood.sh.
 variants=/data1/offitk/mardera1/chrombpnet_flare/variant_lists/Vuckovic_and_Chen_BloodCellGWAS.tsv
 SET=Vuckovic_and_Chen_BloodCellGWAS
-DATASET=DevBloodMultiome
+DATASET=ABM_Blood
 
 root=/data1/offitk/mardera1/chrombpnet_flare
 annotation_dir=$root/output/variant_annotations/$SET/$DATASET

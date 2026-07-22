@@ -11,7 +11,7 @@ SET=1kg_rare
 variants=/data1/offitk/mardera1/chrombpnet_flare/variant_lists/Vuckovic_and_Chen_BloodCellGWAS.tsv
 SET=Vuckovic_and_Chen_BloodCellGWAS
 
-DATASET=DevBloodMultiome
+DATASET=ABM_Blood
 
 ABM_ROOT=/data1/offitk/mardera1/data/cvejic_blood_multiome/abm/chrombpnet_abm
 model_dir=$ABM_ROOT/chrombpnet-smk-abm/results/chrombpnet

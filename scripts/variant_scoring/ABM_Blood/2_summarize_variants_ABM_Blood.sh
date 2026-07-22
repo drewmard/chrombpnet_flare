@@ -10,7 +10,7 @@ variants=/data1/offitk/mardera1/chrombpnet_flare/variant_lists/Vuckovic_and_Chen
 SET=Vuckovic_and_Chen_BloodCellGWAS
 
 
-DATASET=DevBloodMultiome
+DATASET=ABM_Blood
 num_folds=2
 
 root=/data1/offitk/mardera1/chrombpnet_flare
